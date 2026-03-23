@@ -1,0 +1,29 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Xcode
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# App bundle (собирается локально)
+ClickForge.app/
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Локальные экспорты / настройки (по желанию раскомментируй)
+# ClickForge Output/
+# .clickforge_settings.json

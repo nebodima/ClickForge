@@ -1,0 +1,348 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		190C92CDEC67372DB27CF16E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D95AE75A2BF4BE6BECE5C30F /* Assets.xcassets */; };
+		ENG1N3F1L3E4DD3D1N6R3S0 /* engine in Resources */ = {isa = PBXBuildFile; fileRef = ENG1N3F1L3E4DD3D1N6R3S1 /* engine */; };
+		199DDE29937FB5F2AA2248A9 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AF3C5FA3141303060F587A7 /* AppState.swift */; };
+		2BE1F9E04117F14CFA6E696F /* EngineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C8ED224CC7CF07278F8616 /* EngineService.swift */; };
+		446B794B5F987F4BAD407B03 /* ClickForgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7CC765044462D4CF61DA1A /* ClickForgeApp.swift */; };
+		73081FEA630D88B560FC6284 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31FED9BF7A7A8CF37083C3 /* Track.swift */; };
+		A7BD509A5D51568071A110F8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D346F15730FCAB49C3D87F /* ContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1C7CC765044462D4CF61DA1A /* ClickForgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClickForgeApp.swift; sourceTree = "<group>"; };
+		4AF3C5FA3141303060F587A7 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		5A99DA66E4A247C7883D0C86 /* ClickForge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClickForge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F31FED9BF7A7A8CF37083C3 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
+		9891A9CF89C45FB33C13C750 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B1D346F15730FCAB49C3D87F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		D95AE75A2BF4BE6BECE5C30F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E7C8ED224CC7CF07278F8616 /* EngineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngineService.swift; sourceTree = "<group>"; };
+		ENG1N3F1L3E4DD3D1N6R3S1 /* engine */ = {isa = PBXFileReference; lastKnownFileType = folder; path = engine; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		033D1E4EE03908DBAB0EFF63 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1D346F15730FCAB49C3D87F /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2D3D15D62A5267F696D5AA35 /* ClickForge */ = {
+			isa = PBXGroup;
+			children = (
+				D95AE75A2BF4BE6BECE5C30F /* Assets.xcassets */,
+				1C7CC765044462D4CF61DA1A /* ClickForgeApp.swift */,
+				9891A9CF89C45FB33C13C750 /* Info.plist */,
+				789F515A17E5C18BDFC10714 /* Models */,
+				79C55D5199CDADB7DFCCE3A2 /* Services */,
+				033D1E4EE03908DBAB0EFF63 /* Views */,
+			);
+			path = ClickForge;
+			sourceTree = "<group>";
+		};
+		789F515A17E5C18BDFC10714 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4AF3C5FA3141303060F587A7 /* AppState.swift */,
+				7F31FED9BF7A7A8CF37083C3 /* Track.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		79C55D5199CDADB7DFCCE3A2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E7C8ED224CC7CF07278F8616 /* EngineService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		98B33B82BB1ECD766DF1E525 = {
+			isa = PBXGroup;
+			children = (
+				2D3D15D62A5267F696D5AA35 /* ClickForge */,
+				ENG1N3F1L3E4DD3D1N6R3S1 /* engine */,
+				CFED11A574B4AE1C6D9FA210 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CFED11A574B4AE1C6D9FA210 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5A99DA66E4A247C7883D0C86 /* ClickForge.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		94DC6D2883B12F38E8CBF18C /* ClickForge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92325BA1655B1CC4A5856332 /* Build configuration list for PBXNativeTarget "ClickForge" */;
+			buildPhases = (
+				72FB06A6678A53732DD5D7DA /* Sources */,
+				4313C9B9A31BBD8AB50CEBD7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ClickForge;
+			packageProductDependencies = (
+			);
+			productName = ClickForge;
+			productReference = 5A99DA66E4A247C7883D0C86 /* ClickForge.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		78680ACEB1924D8281542287 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					94DC6D2883B12F38E8CBF18C = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 1600017B7FD14E4C6B0E8F6D /* Build configuration list for PBXProject "ClickForge" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 98B33B82BB1ECD766DF1E525;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CFED11A574B4AE1C6D9FA210 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				94DC6D2883B12F38E8CBF18C /* ClickForge */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4313C9B9A31BBD8AB50CEBD7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				190C92CDEC67372DB27CF16E /* Assets.xcassets in Resources */,
+				ENG1N3F1L3E4DD3D1N6R3S0 /* engine in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		72FB06A6678A53732DD5D7DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				199DDE29937FB5F2AA2248A9 /* AppState.swift in Sources */,
+				446B794B5F987F4BAD407B03 /* ClickForgeApp.swift in Sources */,
+				A7BD509A5D51568071A110F8 /* ContentView.swift in Sources */,
+				2BE1F9E04117F14CFA6E696F /* EngineService.swift in Sources */,
+				73081FEA630D88B560FC6284 /* Track.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0157537BA9D949EB718A396D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ClickForge/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		1A918B42D5098F94DA76FF07 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ClickForge/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clickforge.app;
+				PRODUCT_NAME = ClickForge;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		4B66763C08E8B894B80DBD3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = ClickForge/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.clickforge.app;
+				PRODUCT_NAME = ClickForge;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		638BF1E3B06F1A59E898B6D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = ClickForge/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1600017B7FD14E4C6B0E8F6D /* Build configuration list for PBXProject "ClickForge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A918B42D5098F94DA76FF07 /* Debug */,
+				4B66763C08E8B894B80DBD3A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		92325BA1655B1CC4A5856332 /* Build configuration list for PBXNativeTarget "ClickForge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				638BF1E3B06F1A59E898B6D2 /* Debug */,
+				0157537BA9D949EB718A396D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 78680ACEB1924D8281542287 /* Project object */;
+}

@@ -1,0 +1,33 @@
+name: ClickForge
+options:
+  bundleIdPrefix: com.clickforge
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    PRODUCT_BUNDLE_IDENTIFIER: com.clickforge.app
+    PRODUCT_NAME: ClickForge
+    INFOPLIST_FILE: ClickForge/Info.plist
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_HARDENED_RUNTIME: YES
+
+targets:
+  ClickForge:
+    type: application
+    platform: macOS
+    sources:
+      - path: ClickForge
+        excludes:
+          - "**/.DS_Store"
+    resources:
+      - path: engine
+        type: folder
+        buildPhase: resources
+    scheme:
+      environmentVariables:
+        ENGINE_DEV: "1"
