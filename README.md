@@ -20,6 +20,18 @@ open ClickForge.app
 
 Приложение само запускает Python-движок (`engine.py`), ничего вручную запускать не нужно.
 
+## GitHub
+
+Репозиторий: [nebodima/ClickForge](https://github.com/nebodima/ClickForge)
+
+Отправить все локальные изменения одной командой:
+
+```bash
+./scripts/sync-github.sh "кратко, что изменил"
+```
+
+Без аргумента сообщение коммита будет `Update ClickForge`.
+
 ## FFmpeg (для обработки/экспорта)
 
 Обработка треков с метрономом требует **FFmpeg**. Установи:
