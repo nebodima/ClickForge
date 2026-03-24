@@ -19,6 +19,11 @@ private enum SonnetTheme {
     static let vuHigh = Color(red: 0.84, green: 0.60, blue: 0.34)
     static let textPrimary = Color(red: 0.88, green: 0.85, blue: 0.80)
     static let textOnAccent = Color(red: 0.95, green: 0.92, blue: 0.88)
+    /// Ненулевой gain — яркий кислотный зелёный вместо «белого» primary.
+    static let gainActive = Color(red: 0.32, green: 0.98, blue: 0.52)
+    /// Solo вкл.: тёплый янтарь + тёмная буква (не неоновый жёлтый + белый — плохой контраст).
+    static let soloOnFill = Color(red: 0.62, green: 0.48, blue: 0.14)
+    static let soloOnText = Color(red: 0.08, green: 0.07, blue: 0.05)
 }
 
 private struct JetBrainsStyleModifier: ViewModifier {
@@ -541,15 +546,22 @@ struct TrackListView: View {
                 Color.clear.frame(width: 24)     // S
                 Text("Трек").font(.body).foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 8)
+                Text("Группа").font(.body).foregroundStyle(.secondary)
+                    .frame(width: 120, alignment: .leading)
+                    .padding(.leading, 8)
                 Text("dBFS").font(.body).foregroundStyle(.secondary)
-                    .frame(width: 42, alignment: .trailing)
-                Text("MB").font(.body).foregroundStyle(.secondary)
-                    .frame(width: 38, alignment: .trailing)
+                    .frame(width: 62, alignment: .trailing)
+                    .padding(.leading, 14)
                 Text("Gain").font(.body).foregroundStyle(.secondary)
-                    .frame(width: 84, alignment: .center)
+                    .frame(width: 140, alignment: .center)
+                    .padding(.leading, 10)
                 Text("Канал").font(.body).foregroundStyle(.secondary)
-                    .frame(width: 60, alignment: .center)
-                Color.clear.frame(width: 8)
+                    .frame(width: 76, alignment: .center)
+                    .padding(.leading, 8)
+                Text("MB").font(.body).foregroundStyle(.secondary)
+                    .frame(width: 52, alignment: .trailing)
+                    .padding(.leading, 10)
+                Color.clear.frame(width: 12)
             }
             .frame(height: 22)
             .padding(.horizontal, 12)
@@ -667,9 +679,13 @@ struct TrackRowView: View {
             Toggle("S", isOn: Binding(
                 get: { track.isSolo },
                 set: { track.isSolo = $0; state.updatePlayerParams() }
-            )).toggleStyle(MiniToggleStyle(color: .yellow, label: "S")).frame(width: 24)
+            )).toggleStyle(MiniToggleStyle(
+                color: SonnetTheme.soloOnFill,
+                label: "S",
+                onForeground: SonnetTheme.soloOnText
+            )).frame(width: 24)
 
-            // Имя трека + бейдж группы
+            // Имя трека (+ бейдж метронома для сгенерированного трека)
             HStack(spacing: 6) {
                 Text(track.name)
                     .font(.body).lineLimit(1)
@@ -685,50 +701,74 @@ struct TrackRowView: View {
                         .padding(.horizontal, 6).padding(.vertical, 2)
                         .background(SonnetTheme.accentSoft, in: Capsule())
                 }
-                if let grp = state.groupForTrack(track.name) {
-                    Text(grp).font(.body.weight(.medium))
-                        .padding(.horizontal, 5).padding(.vertical, 2)
-                        .background(GroupColors.badgeColor(for: grp, in: Array(state.trackGroups.keys)), in: Capsule())
-                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 8)
 
+            // Группа — отдельная колонка
+            Group {
+                if let grp = state.groupForTrack(track.name) {
+                    Text(grp)
+                        .font(.body.weight(.medium))
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .padding(.horizontal, 5).padding(.vertical, 2)
+                        .background(
+                            GroupColors.badgeColor(for: grp, in: Array(state.trackGroups.keys)),
+                            in: Capsule()
+                        )
+                        .help(grp)
+                } else {
+                    Text("—")
+                        .font(.body)
+                        .foregroundStyle(.tertiary)
+                }
+            }
+            .frame(width: 120, alignment: .leading)
+            .padding(.leading, 8)
+
             // dBFS
             Text("\(track.rmsDb, specifier: "%.1f")")
                 .font(.body.monospacedDigit()).foregroundStyle(.secondary)
-                .frame(width: 52, alignment: .trailing)
+                .frame(width: 62, alignment: .trailing)
+                .padding(.leading, 14)
 
-            // Размер файла MB
-            Text(track.fileSizeMb > 0 ? String(format: "%.1f", track.fileSizeMb) : "—")
-                .font(.body.monospacedDigit()).foregroundStyle(.secondary)
-                .frame(width: 48, alignment: .trailing)
-
-            // Gain — fix #11: двойной клик сбрасывает в 0
-            HStack(spacing: 2) {
-                Button("−") {
-                    track.gainDb = max(-24, track.gainDb - 0.5)
-                    state.updatePlayerParams()
-                }
-                .buttonStyle(.plain).font(.body).frame(width: 18)
-
-                Text("\(track.gainDb, specifier: "%+.1f")")
-                    .font(.body.monospacedDigit())
-                    .frame(width: 40, alignment: .center)
-                    .foregroundStyle(track.gainDb == 0 ? .secondary : .primary)
-                    .onTapGesture(count: 2) {
-                        track.gainDb = 0
+            // Gain — компактный степер по центру колонки (не «растянутые» по краям кнопки)
+            HStack(spacing: 0) {
+                Spacer(minLength: 0)
+                HStack(spacing: 2) {
+                    GainRepeatButton(label: "−") {
+                        track.gainDb = max(-24, track.gainDb - 0.5)
                         state.updatePlayerParams()
                     }
-                    .help("Двойной клик — сброс в 0 dB")
-
-                Button("+") {
-                    track.gainDb = min(12, track.gainDb + 0.5)
-                    state.updatePlayerParams()
+                    Text("\(track.gainDb, specifier: "%+.1f")")
+                        .font(.body.monospacedDigit())
+                        .frame(minWidth: 46, alignment: .center)
+                        .foregroundStyle(track.gainDb == 0 ? Color.secondary : SonnetTheme.gainActive)
+                        .onTapGesture(count: 2) {
+                            track.gainDb = 0
+                            state.updatePlayerParams()
+                        }
+                        .help("Двойной клик — сброс в 0 dB")
+                    GainRepeatButton(label: "+") {
+                        track.gainDb = min(12, track.gainDb + 0.5)
+                        state.updatePlayerParams()
+                    }
                 }
-                .buttonStyle(.plain).font(.body).frame(width: 18)
+                .padding(.horizontal, 4)
+                .padding(.vertical, 2)
+                .background(
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
+                        .fill(Color.white.opacity(0.055))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
+                        .stroke(SonnetTheme.stroke, lineWidth: 0.5)
+                )
+                Spacer(minLength: 0)
             }
-            .frame(width: 76)
+            .frame(width: 140)
+            .padding(.leading, 10)
 
             // Bus — fix #12: tooltip объясняет почему disabled
             Picker("", selection: Binding(
@@ -740,18 +780,60 @@ struct TrackRowView: View {
                 }
             }
             .pickerStyle(.menu).labelsHidden()
-            .frame(width: 60)
+            .frame(width: 76)
+            .padding(.leading, 8)
             .disabled(channelOptions.count <= 1)
             .help(channelOptions.count <= 1
                   ? "Выберите многоканальное устройство для назначения каналов"
                   : "Выходной канал для трека")
 
-            Color.clear.frame(width: 8)
+            // Размер файла MB — последняя колонка данных
+            Text(track.fileSizeMb > 0 ? String(format: "%.1f", track.fileSizeMb) : "—")
+                .font(.body.monospacedDigit()).foregroundStyle(.secondary)
+                .frame(width: 52, alignment: .trailing)
+                .padding(.leading, 10)
+
+            Color.clear.frame(width: 12)
         }
         .frame(height: 32)
         .contentShape(Rectangle())
         // fix #10: вся строка кликабельна для выбора трека
         .onTapGesture { state.selectedTrackIndex = index }
+    }
+}
+
+/// Кнопка шага gain: один клик + удержание с повтором (без сотен кликов).
+private struct GainRepeatButton: View {
+    let label: String
+    let action: () -> Void
+    @State private var timer: Timer?
+
+    var body: some View {
+        Text(label)
+            .font(.body)
+            .frame(width: 24, height: 26)
+            .contentShape(Rectangle())
+            .highPriorityGesture(
+                DragGesture(minimumDistance: 0)
+                    .onChanged { _ in
+                        guard timer == nil else { return }
+                        action()
+                        let t = Timer(timeInterval: 0.075, repeats: true) { _ in
+                            action()
+                        }
+                        RunLoop.main.add(t, forMode: .common)
+                        timer = t
+                    }
+                    .onEnded { _ in
+                        timer?.invalidate()
+                        timer = nil
+                    }
+            )
+            .help("Удерживайте для непрерывного изменения")
+            .onDisappear {
+                timer?.invalidate()
+                timer = nil
+            }
     }
 }
 
@@ -1128,15 +1210,18 @@ struct StatusBar: View {
 // MARK: – Mini Toggle
 
 struct MiniToggleStyle: ToggleStyle {
-    let color: Color; let label: String
+    let color: Color
+    let label: String
+    /// Цвет буквы во включённом состоянии (по умолчанию светлый — для оранжевого Mute).
+    var onForeground: Color = SonnetTheme.textOnAccent
+
     func makeBody(configuration: Configuration) -> some View {
-                Button { configuration.isOn.toggle() } label: {
+        Button { configuration.isOn.toggle() } label: {
             Text(label).font(.body.weight(.bold))
                 .frame(width: 18, height: 18)
                 .background(configuration.isOn ? color : Color.primary.opacity(0.08),
                             in: RoundedRectangle(cornerRadius: 3))
-                // fix #2: white вместо black — виден в тёмной теме
-                .foregroundStyle(configuration.isOn ? SonnetTheme.textOnAccent : Color.secondary.opacity(0.85))
+                .foregroundStyle(configuration.isOn ? onForeground : Color.secondary.opacity(0.85))
         }
         .buttonStyle(.plain)
     }
