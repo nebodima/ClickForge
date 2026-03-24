@@ -24,6 +24,8 @@ private enum SonnetTheme {
     /// Solo вкл.: тёплый янтарь + тёмная буква (не неоновый жёлтый + белый — плохой контраст).
     static let soloOnFill = Color(red: 0.62, green: 0.48, blue: 0.14)
     static let soloOnText = Color(red: 0.08, green: 0.07, blue: 0.05)
+    /// Mute вкл.: терракот + та же тёмная буква (не системный orange + белый).
+    static let muteOnFill = Color(red: 0.63, green: 0.34, blue: 0.19)
 }
 
 private struct JetBrainsStyleModifier: ViewModifier {
@@ -673,7 +675,11 @@ struct TrackRowView: View {
             Toggle("M", isOn: Binding(
                 get: { track.isMuted },
                 set: { track.isMuted = $0; state.updatePlayerParams() }
-            )).toggleStyle(MiniToggleStyle(color: .orange, label: "M")).frame(width: 24)
+            )).toggleStyle(MiniToggleStyle(
+                color: SonnetTheme.muteOnFill,
+                label: "M",
+                onForeground: SonnetTheme.soloOnText
+            )).frame(width: 24)
 
             // Solo
             Toggle("S", isOn: Binding(
