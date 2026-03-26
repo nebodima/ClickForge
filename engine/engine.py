@@ -210,6 +210,8 @@ def _mt_callback(outdata, frames, time_info, status):
                 lr_levels[i] = [levels[i], levels[i]]
 
         ch = ch_starts[i] if i < len(ch_starts) else 0
+        if ch >= n_ch:
+            ch = 0   # канал не существует на этом устройстве → fallback L/R
         if ch < n_ch:
             outdata[:n, ch] += data
         if ch + 1 < n_ch:

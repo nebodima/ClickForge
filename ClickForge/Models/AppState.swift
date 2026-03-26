@@ -369,7 +369,8 @@ final class AppState: ObservableObject {
                 tracks[i].gainDb  = saved.gainDb
                 tracks[i].isMuted = saved.isMuted
                 tracks[i].isSolo  = saved.isSolo
-                tracks[i].chStart = saved.chStart
+                // Clamp chStart: если сохранённый канал не существует на текущем устройстве — сброс в 0
+                tracks[i].chStart = (saved.chStart < deviceChannels) ? saved.chStart : 0
             }
         }
 
