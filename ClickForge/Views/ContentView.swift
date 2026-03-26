@@ -494,6 +494,31 @@ struct TrackListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            // ── Баннер невалидной маршрутизации ──────────────────────────────
+            if state.invalidRoutingCount > 0 {
+                HStack(spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(.orange)
+                    Text("\(state.invalidRoutingCount) \(routingWord(state.invalidRoutingCount)) назначены на каналы, которых нет на текущем устройстве — воспроизводятся через 1-2. Назначения сохранены.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    Spacer()
+                    Button {
+                        for i in state.tracks.indices {
+                            if state.tracks[i].chStart >= state.deviceChannels {
+                                state.tracks[i].chStart = 0
+                            }
+                        }
+                        state.updatePlayerParams()
+                        state.saveConfig()
+                    } label: {
+                        Text("Сбросить все").font(.caption)
+                    }
+                    .buttonStyle(.bordered).controlSize(.small)
+                }
+                .padding(.horizontal, 12).padding(.vertical, 6)
+                .background(Color.orange.opacity(0.08))
+            }
+
             // Шапка таблицы (фиксирована, вне List)
             HStack(spacing: 0) {
                 Color.clear.frame(width: 18)     // VU
@@ -542,6 +567,14 @@ struct TrackListView: View {
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
+        }
+    }
+
+    private func routingWord(_ n: Int) -> String {
+        switch n % 10 {
+        case 1 where n % 100 != 11: return "трек"
+        case 2, 3, 4 where !(11...14).contains(n % 100): return "трека"
+        default: return "треков"
         }
     }
 
@@ -729,22 +762,36 @@ struct TrackRowView: View {
             .frame(width: 140)
             .padding(.leading, 10)
 
-            // Bus — fix #12: tooltip объясняет почему disabled
-            Picker("", selection: Binding(
-                get: { track.chStart },
-                set: { track.chStart = $0; state.updatePlayerParams() }
-            )) {
-                ForEach(channelOptions, id: \.self) { ch in
-                    Text("\(ch+1)-\(ch+2)").tag(ch)
+            // Bus — канал вывода
+            let chInvalid = track.chStart >= state.deviceChannels
+            ZStack(alignment: .topTrailing) {
+                Picker("", selection: Binding(
+                    get: { track.chStart },
+                    set: { track.chStart = $0; state.updatePlayerParams() }
+                )) {
+                    // Если текущий chStart выходит за диапазон — показываем его как опцию со значком
+                    if chInvalid {
+                        Text("⚠ \(track.chStart+1)-\(track.chStart+2)").tag(track.chStart)
+                    }
+                    ForEach(channelOptions, id: \.self) { ch in
+                        Text("\(ch+1)-\(ch+2)").tag(ch)
+                    }
                 }
+                .pickerStyle(.menu).labelsHidden()
+                .frame(width: 76)
+                .disabled(channelOptions.count <= 1 && !chInvalid)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(chInvalid ? Color.orange.opacity(0.8) : Color.clear, lineWidth: 1.5)
+                )
+                .help(chInvalid
+                      ? "Канал \(track.chStart+1)-\(track.chStart+2) недоступен — звук идёт на 1-2. Подключите нужное устройство или выберите другой канал."
+                      : channelOptions.count <= 1
+                          ? "Выберите многоканальное устройство для назначения каналов"
+                          : "Выходной канал для трека")
             }
-            .pickerStyle(.menu).labelsHidden()
             .frame(width: 76)
             .padding(.leading, 8)
-            .disabled(channelOptions.count <= 1)
-            .help(channelOptions.count <= 1
-                  ? "Выберите многоканальное устройство для назначения каналов"
-                  : "Выходной канал для трека")
 
             // Размер файла MB — последняя колонка данных
             Text(track.fileSizeMb > 0 ? String(format: "%.1f", track.fileSizeMb) : "—")

@@ -369,8 +369,10 @@ final class AppState: ObservableObject {
                 tracks[i].gainDb  = saved.gainDb
                 tracks[i].isMuted = saved.isMuted
                 tracks[i].isSolo  = saved.isSolo
-                // Clamp chStart: если сохранённый канал не существует на текущем устройстве — сброс в 0
-                tracks[i].chStart = (saved.chStart < deviceChannels) ? saved.chStart : 0
+                // Сохраняем chStart как есть — даже если превышает каналы текущего устройства.
+                // Движок сам делает fallback на 0 при воспроизведении (engine.py _mt_callback).
+                // Когда устройство с нужным числом каналов снова подключится — назначения восстановятся.
+                tracks[i].chStart = saved.chStart
             }
         }
 
@@ -1000,6 +1002,13 @@ final class AppState: ObservableObject {
     var deviceChannels: Int {
         guard let id = audioDeviceId else { return 2 }
         return audioDevices.first { $0.id == id }?.channels ?? 2
+    }
+
+    /// Количество треков с chStart >= deviceChannels (назначены на несуществующие каналы).
+    /// Движок автоматически роутит их на 0-1, но пользователь должен знать об этом.
+    var invalidRoutingCount: Int {
+        let nch = deviceChannels
+        return tracks.filter { !Self.isGeneratedPreclickTrackName($0.name) && $0.chStart >= nch }.count
     }
 
     private func startPlayerPolling() {
