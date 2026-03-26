@@ -80,7 +80,7 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Image(systemName: "waveform")
-                    .font(.body.weight(.semibold)).foregroundStyle(.accentColor)
+                    .font(.body.weight(.semibold)).foregroundStyle(Color.accentColor)
                 Text("ClickForge").font(.body.weight(.bold))
             }
             .padding(.horizontal, 16).padding(.vertical, 12)
@@ -149,7 +149,7 @@ struct SettingsPanelView: View {
                         Text("BPM").font(.body).foregroundStyle(.secondary)
                         Text("\(a.bpm, specifier: "%.1f")")
                             .font(.body.weight(.bold).monospacedDigit())
-                            .foregroundStyle(.accentColor)
+                            .foregroundStyle(Color.accentColor)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     VStack(alignment: .trailing, spacing: 2) {
@@ -656,7 +656,7 @@ struct TrackRowView: View {
                 if isGeneratedTrack {
                     Text("МЕТРОНОМ")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(.accentColor)
+                        .foregroundStyle(Color.accentColor)
                         .padding(.horizontal, 6).padding(.vertical, 2)
                         .background(Color.accentColor.opacity(0.15), in: Capsule())
                 }
@@ -1113,7 +1113,7 @@ struct ProcessProgressBar: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
                 Image(systemName: "waveform.badge.plus")
-                    .font(.body).foregroundStyle(.accentColor)
+                    .font(.body).foregroundStyle(Color.accentColor)
                 Text(state.progressMsg.isEmpty ? "Обработка…" : state.progressMsg)
                     .font(.body)
                     .foregroundStyle(state.progressMsg.isEmpty ? .secondary : .primary)
