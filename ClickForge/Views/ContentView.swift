@@ -1,45 +1,6 @@
 import SwiftUI
 import AppKit
 
-private enum SonnetTheme {
-    // Claude dark-стиль: теплый темный фон и фирменный оранжевый акцент.
-    static let background = Color(red: 0.102, green: 0.094, blue: 0.082) // #1a1815
-    static let sidebar = Color(red: 0.125, green: 0.114, blue: 0.094)    // #201d18
-    static let panel = Color(red: 0.157, green: 0.145, blue: 0.122)      // между bg и sidebar
-    static let accent = Color(red: 0.757, green: 0.373, blue: 0.235)     // #C15F3C
-    static let accentSoft = accent.opacity(0.18)
-    static let accentFaint = accent.opacity(0.10)
-    static let stroke = Color.white.opacity(0.10)
-    static let readyDot = Color.green
-    static let busyDot = Color.white.opacity(0.45)
-    static let waveformPlayed = Color(red: 0.31, green: 0.62, blue: 0.93)
-    static let waveformUnplayed = Color(red: 0.25, green: 0.45, blue: 0.65)
-    static let vuLow = Color(red: 0.47, green: 0.38, blue: 0.29)
-    static let vuMid = Color(red: 0.66, green: 0.48, blue: 0.30)
-    static let vuHigh = Color(red: 0.84, green: 0.60, blue: 0.34)
-    static let textPrimary = Color(red: 0.88, green: 0.85, blue: 0.80)
-    static let textOnAccent = Color(red: 0.95, green: 0.92, blue: 0.88)
-    /// Ненулевой gain — яркий кислотный зелёный вместо «белого» primary.
-    static let gainActive = Color(red: 0.32, green: 0.98, blue: 0.52)
-    /// Solo вкл.: тёплый янтарь + тёмная буква (не неоновый жёлтый + белый — плохой контраст).
-    static let soloOnFill = Color(red: 0.62, green: 0.48, blue: 0.14)
-    static let soloOnText = Color(red: 0.08, green: 0.07, blue: 0.05)
-    /// Mute вкл.: терракот + та же тёмная буква (не системный orange + белый).
-    static let muteOnFill = Color(red: 0.63, green: 0.34, blue: 0.19)
-}
-
-private struct JetBrainsStyleModifier: ViewModifier {
-    @ViewBuilder
-    func body(content: Content) -> some View {
-        if NSFont(name: "JetBrains Mono", size: 14) != nil {
-            content
-                .font(.custom("JetBrains Mono", size: 14))
-                .fontDesign(.monospaced)
-        } else {
-            content.fontDesign(.monospaced)
-        }
-    }
-}
 
 struct ContentView: View {
     @EnvironmentObject var state: AppState
@@ -91,11 +52,6 @@ struct ContentView: View {
             Text(state.errorMsg ?? "")
         }
         .onAppear { state.setupKeyboardShortcuts() }
-        .modifier(JetBrainsStyleModifier())
-        .tint(SonnetTheme.accent)
-        .foregroundStyle(SonnetTheme.textPrimary)
-        .preferredColorScheme(.dark)
-        .background(SonnetTheme.background.ignoresSafeArea())
     }
 }
 
@@ -111,7 +67,7 @@ struct BottomBarView: View {
             if !state.tracks.isEmpty { WaveformArea() }
             StatusBar()
         }
-        .background(SonnetTheme.panel.opacity(0.95))
+        .background(.ultraThinMaterial)
     }
 }
 
@@ -124,7 +80,7 @@ struct SidebarView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Image(systemName: "waveform")
-                    .font(.body.weight(.semibold)).foregroundStyle(SonnetTheme.accent)
+                    .font(.body.weight(.semibold)).foregroundStyle(.accentColor)
                 Text("ClickForge").font(.body.weight(.bold))
             }
             .padding(.horizontal, 16).padding(.vertical, 12)
@@ -137,7 +93,7 @@ struct SidebarView: View {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {
                     Circle()
-                        .fill(state.engineReady ? SonnetTheme.readyDot : SonnetTheme.busyDot)
+                        .fill(state.engineReady ? Color.green : Color.secondary)
                         .frame(width: 8, height: 8)
                     // fix #7: русский текст
                     Text(state.engineReady ? "Движок готов" : "Запуск…")
@@ -154,7 +110,6 @@ struct SidebarView: View {
             }
             .padding(.horizontal, 16).padding(.bottom, 12)
         }
-        .background(SonnetTheme.sidebar)
     }
 }
 
@@ -194,7 +149,7 @@ struct SettingsPanelView: View {
                         Text("BPM").font(.body).foregroundStyle(.secondary)
                         Text("\(a.bpm, specifier: "%.1f")")
                             .font(.body.weight(.bold).monospacedDigit())
-                            .foregroundStyle(SonnetTheme.accent)
+                            .foregroundStyle(.accentColor)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     VStack(alignment: .trailing, spacing: 2) {
@@ -204,7 +159,7 @@ struct SettingsPanelView: View {
                     .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 .padding(10)
-                .background(SonnetTheme.accent.opacity(0.10), in: RoundedRectangle(cornerRadius: 8))
+                .background(Color.accentColor.opacity(0.10), in: RoundedRectangle(cornerRadius: 8))
                 Divider()
             }
 
@@ -254,7 +209,7 @@ struct SettingsPanelView: View {
                                 .font(.body)
                         }
                         .buttonStyle(.plain)
-                        .foregroundStyle(outputFolderExists ? SonnetTheme.accent : .secondary)
+                        .foregroundStyle(outputFolderExists ? Color.accentColor : .secondary)
                         .disabled(!outputFolderExists)
                         .help(outputFolderExists
                               ? "Открыть папку результатов в Finder"
@@ -462,10 +417,8 @@ struct AnalysisChip: View {
             }
             .font(.body)
             .padding(.horizontal, 10).padding(.vertical, 4)
-            .background(SonnetTheme.panel.opacity(0.95), in: Capsule())
-            .overlay(
-                Capsule().stroke(SonnetTheme.stroke, lineWidth: 0.5)
-            )
+            .background(.regularMaterial, in: Capsule())
+            .overlay(Capsule().stroke(Color.primary.opacity(0.10), lineWidth: 0.5))
         }
     }
 }
@@ -492,7 +445,7 @@ struct PlayStopButton: View {
             }
         }
         .buttonStyle(.bordered)
-        .tint(state.playerPlaying ? SonnetTheme.accent.opacity(0.82) : SonnetTheme.accent)
+        .tint(state.playerPlaying ? .orange : .accentColor)
         .help("Пробел: воспр./пауза")
         .disabled(state.tracks.isEmpty || state.isProcessing ||
                   state.playerLoading || state.playerTransitioning)
@@ -567,7 +520,7 @@ struct TrackListView: View {
             }
             .frame(height: 22)
             .padding(.horizontal, 12)
-            .background(SonnetTheme.panel.opacity(0.70))
+            .background(Color.primary.opacity(0.04))
 
             Divider()
 
@@ -578,7 +531,7 @@ struct TrackListView: View {
                         .listRowInsets(EdgeInsets(top: 0, leading: 12, bottom: 0, trailing: 12))
                         .listRowBackground(rowBackground(idx: idx, track: track))
                         .listRowSeparator(.visible)
-                        .listRowSeparatorTint(SonnetTheme.stroke)
+                        .listRowSeparatorTint(Color.primary.opacity(0.10))
                 }
                 .onMove { from, to in
                     state.tracks.move(fromOffsets: from, toOffset: to)
@@ -600,15 +553,15 @@ struct TrackListView: View {
             (state.groupForTrack(track.name).map { state.processingTrackNames.contains($0) } ?? false)
         )
         if isGenerated {
-            SonnetTheme.accent.opacity(state.selectedTrackIndex == idx ? 0.26 : 0.16)
+            Color.accentColor.opacity(state.selectedTrackIndex == idx ? 0.20 : 0.10)
         } else if state.selectedTrackIndex == idx && !isProcessingThis {
-            SonnetTheme.accentSoft
+            Color.accentColor.opacity(0.12)
         } else if isProcessingThis {
-            SonnetTheme.accent.opacity(0.22)
+            Color.accentColor.opacity(0.15)
         } else if track.isSolo {
-            SonnetTheme.accent.opacity(0.12)
+            Color.yellow.opacity(0.12)
         } else if track.isMuted {
-            Color.white.opacity(0.03)
+            Color.primary.opacity(0.03)
         } else {
             Color.clear
         }
@@ -676,9 +629,9 @@ struct TrackRowView: View {
                 get: { track.isMuted },
                 set: { track.isMuted = $0; state.updatePlayerParams() }
             )).toggleStyle(MiniToggleStyle(
-                color: SonnetTheme.muteOnFill,
+                color: .orange,
                 label: "M",
-                onForeground: SonnetTheme.soloOnText
+                onForeground: .white
             )).frame(width: 24)
 
             // Solo
@@ -686,9 +639,9 @@ struct TrackRowView: View {
                 get: { track.isSolo },
                 set: { track.isSolo = $0; state.updatePlayerParams() }
             )).toggleStyle(MiniToggleStyle(
-                color: SonnetTheme.soloOnFill,
+                color: .yellow,
                 label: "S",
-                onForeground: SonnetTheme.soloOnText
+                onForeground: Color.black.opacity(0.75)
             )).frame(width: 24)
 
             // Имя трека (+ бейдж метронома для сгенерированного трека)
@@ -697,15 +650,15 @@ struct TrackRowView: View {
                     .font(.body).lineLimit(1)
                     .foregroundStyle(
                         isGeneratedTrack
-                            ? SonnetTheme.accent.opacity(0.82)
-                            : (track.isMuted ? Color.secondary.opacity(0.80) : Color.primary.opacity(0.78))
+                            ? Color.accentColor
+                            : (track.isMuted ? Color.secondary : Color.primary)
                     )
                 if isGeneratedTrack {
                     Text("МЕТРОНОМ")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(SonnetTheme.accent)
+                        .foregroundStyle(.accentColor)
                         .padding(.horizontal, 6).padding(.vertical, 2)
-                        .background(SonnetTheme.accentSoft, in: Capsule())
+                        .background(Color.accentColor.opacity(0.15), in: Capsule())
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -750,7 +703,7 @@ struct TrackRowView: View {
                     Text("\(track.gainDb, specifier: "%+.1f")")
                         .font(.body.monospacedDigit())
                         .frame(minWidth: 46, alignment: .center)
-                        .foregroundStyle(track.gainDb == 0 ? Color.secondary : SonnetTheme.gainActive)
+                        .foregroundStyle(track.gainDb == 0 ? Color.secondary : Color.accentColor)
                         .onTapGesture(count: 2) {
                             track.gainDb = 0
                             state.updatePlayerParams()
@@ -765,11 +718,11 @@ struct TrackRowView: View {
                 .padding(.vertical, 2)
                 .background(
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
-                        .fill(Color.white.opacity(0.055))
+                        .fill(Color.primary.opacity(0.06))
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
-                        .stroke(SonnetTheme.stroke, lineWidth: 0.5)
+                        .stroke(Color.primary.opacity(0.12), lineWidth: 0.5)
                 )
                 Spacer(minLength: 0)
             }
@@ -861,7 +814,7 @@ struct VUMeter: View {
         GeometryReader { geo in
             ZStack(alignment: .bottom) {
                 RoundedRectangle(cornerRadius: 1)
-                    .fill(Color.white.opacity(0.08))
+                    .fill(Color.primary.opacity(0.08))
                 RoundedRectangle(cornerRadius: 1)
                     .fill(barColor)
                     .frame(height: max(0, CGFloat(displayLevel) * geo.size.height))
@@ -997,25 +950,11 @@ struct WaveformView: View {
             let played = max(0, min(1, CGFloat(progress)))
             let playedX = w * played
 
-            // Профессиональный мягкий фон
-            let bgRect = CGRect(x: 0, y: 0, width: w, height: h)
-            ctx.fill(
-                Path(roundedRect: bgRect, cornerRadius: 6),
-                with: .linearGradient(
-                    Gradient(colors: [
-                        SonnetTheme.panel.opacity(0.90),
-                        SonnetTheme.panel.opacity(0.70)
-                    ]),
-                    startPoint: CGPoint(x: 0, y: 0),
-                    endPoint: CGPoint(x: 0, y: h)
-                )
-            )
-
             // Центральная ось
             var axis = Path()
             axis.move(to: CGPoint(x: 0, y: mid))
             axis.addLine(to: CGPoint(x: w, y: mid))
-            ctx.stroke(axis, with: .color(.white.opacity(0.08)), lineWidth: 0.5)
+            ctx.stroke(axis, with: .color(Color.primary.opacity(0.10)), lineWidth: 0.5)
 
             for (i, amp) in s.enumerated() {
                 let x = CGFloat(i) * barW
@@ -1031,8 +970,8 @@ struct WaveformView: View {
                 )
                 let isPlayed = x <= playedX
                 let color = isPlayed
-                    ? SonnetTheme.waveformPlayed.opacity(0.95)
-                    : SonnetTheme.waveformUnplayed.opacity(0.45)
+                    ? Color.accentColor.opacity(0.85)
+                    : Color.primary.opacity(0.25)
                 ctx.fill(Path(roundedRect: rect, cornerRadius: 1.8), with: .color(color))
             }
 
@@ -1042,20 +981,17 @@ struct WaveformView: View {
                 var cur = Path()
                 cur.move(to: CGPoint(x: cx, y: 0))
                 cur.addLine(to: CGPoint(x: cx, y: h))
-                ctx.stroke(cur, with: .color(.white.opacity(0.85)), lineWidth: 1.2)
+                ctx.stroke(cur, with: .color(Color.primary.opacity(0.75)), lineWidth: 1.5)
                 let glowRect = CGRect(x: cx - 2, y: 0, width: 4, height: h)
-                ctx.fill(Path(glowRect), with: .color(.white.opacity(0.12)))
+                ctx.fill(Path(glowRect), with: .color(Color.primary.opacity(0.08)))
 
                 // Легкая подсветка уже проигранной области
                 let playedRect = CGRect(x: 0, y: 0, width: cx, height: h)
-                ctx.fill(Path(playedRect), with: .color(.white.opacity(0.04)))
+                ctx.fill(Path(playedRect), with: .color(Color.accentColor.opacity(0.04)))
             }
         }
-        .background(SonnetTheme.background.opacity(0.7), in: RoundedRectangle(cornerRadius: 6))
-        .overlay(
-            RoundedRectangle(cornerRadius: 6)
-                .stroke(SonnetTheme.stroke, lineWidth: 0.6)
-        )
+        .background(Color.primary.opacity(0.04), in: RoundedRectangle(cornerRadius: 6))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.primary.opacity(0.10), lineWidth: 0.5))
         .overlay(
             GeometryReader { geo in
                 Color.clear.contentShape(Rectangle())
@@ -1113,10 +1049,8 @@ struct MasterVUView: View {
         }
         .padding(.horizontal, 10).padding(.vertical, 8)
         .frame(width: totalWidth)
-        .background(SonnetTheme.panel.opacity(0.75), in: RoundedRectangle(cornerRadius: 6))
-        .overlay(
-            RoundedRectangle(cornerRadius: 6).stroke(SonnetTheme.stroke, lineWidth: 0.5)
-        )
+        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 6))
+        .overlay(RoundedRectangle(cornerRadius: 6).stroke(Color.primary.opacity(0.10), lineWidth: 0.5))
     }
 }
 
@@ -1135,7 +1069,7 @@ struct ChannelBar: View {
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .bottom) {
-                RoundedRectangle(cornerRadius: 3).fill(Color.white.opacity(0.08))
+                RoundedRectangle(cornerRadius: 3).fill(Color.primary.opacity(0.08))
                 RoundedRectangle(cornerRadius: 3)
                     .fill(barColor)
                     .frame(height: max(0, CGFloat(displayLevel) * geo.size.height))
@@ -1179,10 +1113,10 @@ struct ProcessProgressBar: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
                 Image(systemName: "waveform.badge.plus")
-                    .font(.body).foregroundStyle(SonnetTheme.accent)
+                    .font(.body).foregroundStyle(.accentColor)
                 Text(state.progressMsg.isEmpty ? "Обработка…" : state.progressMsg)
                     .font(.body)
-                    .foregroundStyle(state.progressMsg.isEmpty ? .secondary : SonnetTheme.textPrimary)
+                    .foregroundStyle(state.progressMsg.isEmpty ? .secondary : .primary)
                 Spacer()
                 Text("\(state.progressPct)%")
                     .font(.body.monospacedDigit())
@@ -1192,7 +1126,7 @@ struct ProcessProgressBar: View {
                 .progressViewStyle(.linear).tint(.accentColor)
         }
         .padding(.horizontal, 16).padding(.vertical, 10)
-        .background(SonnetTheme.accent.opacity(0.12), in: Rectangle())
+        .background(Color.accentColor.opacity(0.08), in: Rectangle())
     }
 }
 
@@ -1219,7 +1153,7 @@ struct MiniToggleStyle: ToggleStyle {
     let color: Color
     let label: String
     /// Цвет буквы во включённом состоянии (по умолчанию светлый — для оранжевого Mute).
-    var onForeground: Color = SonnetTheme.textOnAccent
+    var onForeground: Color = .white
 
     func makeBody(configuration: Configuration) -> some View {
         Button { configuration.isOn.toggle() } label: {
